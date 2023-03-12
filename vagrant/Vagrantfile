@@ -72,12 +72,15 @@ Vagrant.configure("2") do |config|
       provision_kubernetes_node node
       if i == 1
         # Install (opinionated) configs for vim and tmux on master-1. These used by the author for CKA exam.
+        node.vm.provision :shell, inline: "sudo apt-get update && sudo apt-get upgrade -y"
+        node.vm.provision :shell, inline: "sudo apt-get install -y dos2unix"
         node.vm.provision "file", source: "./ubuntu/tmux.conf", destination: "$HOME/.tmux.conf"
         node.vm.provision "file", source: "./ubuntu/vimrc", destination: "$HOME/.vimrc"
         node.vm.provision "file", source: "./k8s/bashrc", destination: "$HOME/.bashrc"
         node.vm.provision "file", source: "./k8s/calico.yaml", destination: "$HOME/calico.yaml"
         node.vm.provision "file", source: "./k8s/config_kubtctl.sh", destination: "$HOME/config_kubtctl.sh"
         node.vm.provision "file", source: "./k8s/install_master.sh", destination: "$HOME/install_master.sh"
+        node.vm.provision :shell, inline: "sudo dos2unix -R $HOME/*"
       end
     end
   end
@@ -96,9 +99,12 @@ Vagrant.configure("2") do |config|
       provision_kubernetes_node node
       if i == 1
         # Install (opinionated) configs for vim and tmux on master-1. These used by the author for CKA exam.
+        node.vm.provision :shell, inline: "sudo apt-get update && sudo apt-get upgrade -y"
+        node.vm.provision :shell, inline: "sudo apt-get install -y dos2unix"        
         node.vm.provision "file", source: "./ubuntu/tmux.conf", destination: "$HOME/.tmux.conf"
         node.vm.provision "file", source: "./ubuntu/vimrc", destination: "$HOME/.vimrc"
         node.vm.provision "file", source: "./k8s/install_worker.sh", destination: "$HOME/install_worker.sh"
+        node.vm.provision :shell, inline: "sudo dos2unix -R $HOME/*"
       end
     end
   end
